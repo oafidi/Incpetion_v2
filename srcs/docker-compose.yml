@@ -1,0 +1,65 @@
+services:
+  mariadb:
+    build: requirements/mariadb
+    image: mariadb:v1
+    container_name: mariadb
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "test -f /var/lib/mysql/.setup_done && mariadb -u root -p\"$$MYSQL_ROOT_PASSWORD\" -e 'SELECT 1;' >/dev/null 2>&1"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - inception
+  wordpress:
+    build: requirements/wordpress
+    image: wordpress:v1
+    container_name: wordpress
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+  nginx:
+    build: requirements/nginx
+    image: nginx:v1
+    container_name: nginx
+    restart: always
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html:ro
+    networks:
+      - inception
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/oafidi/data/mariadb
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/oafidi/data/wordpress
+
+networks:
+  inception:
+    driver: bridge
