@@ -15,7 +15,7 @@ The source files are under `srcs/`. Docker Compose connects the containers throu
 ### Design comparisons
 
 - **Virtual machines vs Docker:** A virtual machine includes a complete guest operating system. A Docker container shares the host kernel and isolates only the application and its dependencies, making it smaller and faster to start.
-- **Secrets vs environment variables:** Environment variables provide runtime configuration. Docker secrets are more appropriate for confidential values because they can be mounted as files instead of being exposed directly in the environment. This project keeps its untracked configuration in `srcs/.env`.
+- **Secrets vs environment variables:** Environment variables provide runtime configuration. Docker secrets are more appropriate for confidential values because they can be mounted as files instead of being exposed directly in the environment.
 - **Docker network vs host network:** A Docker bridge network isolates the services and gives them DNS names such as `mariadb` and `wordpress`. Host networking removes that isolation and is forbidden by the subject.
 - **Docker volumes vs bind mounts:** Docker named volumes are managed as Docker objects. Bind mounts directly expose host paths. This project declares named volumes and configures their storage under `/home/oafidi/data`.
 

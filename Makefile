@@ -21,3 +21,5 @@ fclean:
 	sudo rm -rf /home/oafidi/data/mariadb /home/oafidi/data/wordpress
 
 re: fclean all
+
+.PHONY: all up build down clean fclean re

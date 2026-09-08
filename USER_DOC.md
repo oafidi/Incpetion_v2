@@ -31,7 +31,7 @@ The local machine must map `oafidi.42.fr` to its local IP in `/etc/hosts`. A bro
 
 ## Credentials
 
-Configuration and credential variables are stored in `srcs/.env`.
+Configuration and credential variables are stored in `srcs/.env`, you should fill them.
 
 ## Check service health
 
